@@ -7,6 +7,30 @@
   pointer-events: none;
 }
 
+.login-form {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  height: 100%;
+}
+
+.btn-lg {
+  background-color: #3899ce;
+  border: none;
+  width: 100%;
+  display: block;
+  padding: 10px;
+  margin: 0px 0px 10px 0px;
+  text-align: center;
+}
+
+.btn-dark:hover {
+  color: #fff;
+  border: none;
+  background-color: #F46338;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
