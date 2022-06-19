@@ -10,6 +10,8 @@ import About from "./container/About/About";
 import Contact from "./container/Contact/Contact";
 import Appointment from "./container/Make-an-Appointment/Appointment";
 import Login from "./container/Login/Login";
+import Medicine from "./container/Medicine/Medicine";
+import UseRef from "./container/UseRef/UseRef";
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
         <Route path="/About" exact>
           <About />
         </Route>
+        <Route path="/Medicine" exact>
+          <Medicine />
+        </Route>
         <Route path="/Contact" exact>
           <Contact />
         </Route>
@@ -37,6 +42,9 @@ function App() {
         <Route path="/Login" exact>
           <Login />
         </Route>
+        <Route path="/UseRef" exact>
+          <UseRef />
+        </Route>
       </Switch>
       <Footer />
     </div>
@@ -45,8 +53,8 @@ function App() {
 
 export default App;
 
-
-{/* <div>
+{
+  /* <div>
              <Form className='login-form'>
                 <h1>
                     <span className='font-weight-bold'>Login Page</span>
@@ -68,4 +76,5 @@ export default App;
                     <Link >Forgot password</Link>
                 </div>
              </Form>
-        </div> */}
+        </div> */
+}

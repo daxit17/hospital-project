@@ -1,4 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
+import { Link, NavLink } from "react-router-dom";
+import UseRef from "../../container/UseRef/UseRef";
 
 function Footer(props) {
   return (
@@ -37,6 +39,9 @@ function Footer(props) {
           <a href="#" className="linkedin">
             <i className="bx bxl-linkedin" />
           </a>
+        </div>
+        <div>
+          <Link to="/UseRef">Dummy Link</Link>
         </div>
       </div>
     </footer>

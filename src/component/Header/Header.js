@@ -46,38 +46,43 @@ function Header(props) {
           <nav id="navbar" className="navbar order-last order-lg-0">
             <ul>
               <li>
-                <NavLink className="nav-link scrollto" to="/">
+                <NavLink className="nav-link scrollto" to="/" exact>
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink className="nav-link scrollto" to="/Department">
+                <NavLink className="nav-link scrollto" to="/Department" exact>
                   Department
                 </NavLink>
               </li>
               <li>
-                <NavLink className="nav-link scrollto" to="/Doctors">
+                <NavLink className="nav-link scrollto" to="/Doctors" exact>
                   Doctors
                 </NavLink>
               </li>
               <li>
-                <NavLink className="nav-link scrollto" to="/About">
+                <NavLink className="nav-link scrollto" to="/About" exact>
                   About
                 </NavLink>
               </li>
               <li>
-                <NavLink className="nav-link scrollto" to="/Contact">
+                <NavLink className="nav-link scrollto" to="/Medicine" exact>
+                  Medicine-Data
+                </NavLink>
+              </li>
+              <li>
+                <NavLink className="nav-link scrollto" to="/Contact" exact>
                   Contact
                 </NavLink>
               </li>
             </ul>
             <i className="bi bi-list mobile-nav-toggle" />
           </nav>
-          <NavLink className="appointment-btn scrollto" to="/Appointment">
+          <NavLink className="appointment-btn scrollto" to="/Appointment" exact>
             <span className="d-none d-md-inline">Make an</span>
             Appointment
           </NavLink>
-          <NavLink className="appointment-btn scrollto" to="/Login">
+          <NavLink className="appointment-btn scrollto" to="/Login" exact>
             <span className="d-none d-md-inline">Login/ Signup</span>
           </NavLink>
         </div>
