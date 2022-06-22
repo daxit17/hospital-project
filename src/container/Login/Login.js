@@ -7,26 +7,61 @@ const Login = () => {
   const [userType, setUserType] = useState('login')
   const [reset, setReset] = useState(false);
 
-  let schema = yup.object().shape({
-    email: yup.string().required("Please enter email id").email("Please enter valid email id"),
-    password: yup.string().required("Please enter password."),
-    createdOn: yup.date().default(function () {
-      return new Date();
-    }),
-  });
+  let schemaObj, intObj;
+
+  if (reset) {
+
+    schemaObj = {
+      email: yup.string().email("Please Enter Valid Email").required("Plaese Enter Email")
+    }
+
+    intObj = {
+      email: '',
+    }
+
+  } else {
+    if (userType === 'login') {
+
+      schemaObj = {
+        email: yup.string().required("Please enter email id").email("Please enter valid email id"),
+        password: yup.string().required("Please enter password.")
+      }
+  
+      intObj = {
+        email: '',
+        password: '',
+      }
+  
+    } else {
+  
+      schemaObj = {
+        name: yup.string().required("Please enter name"),
+        email: yup.string().required("Please enter email id").email("Please enter valid email id"),
+        password: yup.string().required("Please enter password.")
+      }
+  
+      intObj = {
+        name: '',
+        email: '',
+        password: '',
+      }
+  
+    }
+  }
+
+
+  let schema = yup.object().shape(schemaObj);
 
   const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema : {schema},
+    initialValues: intObj,
+    validationSchema: schema,
+    enableReinitialize:true,
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
     },
   });
 
-  let { handleChange, error, handleSubmit } = formik;
+  let { handleChange, errors, handleSubmit, handleBlur, touched } = formik;
 
   return (
     <>
@@ -52,25 +87,44 @@ const Login = () => {
                     :
                     <Col md={8}>
                       <FormGroup className="mt-3 mt-md-0">
-                        <Input type="text" className="form-control" name="name" id="name" placeholder="Your Name" data-rule="name" data-msg="Please enter a valid name" />
-                        <div className="validate" />
+                        <Input type="text"
+                          className="form-control"
+                          name="name"
+                          id="name"
+                          placeholder="Your Name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        <p>{errors.name && touched.name ? errors.name : ''}</p>
                       </FormGroup>
                     </Col>
                 }
                 <Col md={8}>
                   <FormGroup className="mt-3 mt-md-0">
-                    <Input type="email" className="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" onChange={handleChange} />
-                    <div className="validate" />
-                    <p>{error}</p>
+                    <Input type="email"
+                      className="form-control"
+                      name="email"
+                      id="email"
+                      placeholder="Your Email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <p>{errors.email && touched.email ? errors.email : ''}</p>
                   </FormGroup>
                 </Col>
                 {
                   !reset ?
                     <Col md={8}>
                       <FormGroup className="mt-3 mt-md-0">
-                        <Input type="password" name="password" className="form-control" id="password" placeholder="Your Password" data-rule="minlen:4" data-msg="Please enter password" autoComplete="off" />
-                        <div className="validate" onChange={handleChange}/>
-                        <p>{error}</p>
+                        <Input type="password"
+                          name="password"
+                          className="form-control"
+                          id="password"
+                          placeholder="Your Password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        <p>{errors.password && touched.password ? errors.password : ''}</p>
                       </FormGroup>
                     </Col>
                     :
@@ -81,9 +135,9 @@ const Login = () => {
                 {
                   !reset ?
                     userType === 'login' ?
-                      <Button type="submit" className='shadow-none' onSubmit={handleSubmit}>Login</Button> : <Button type="submit" className='shadow-none'>Signup</Button>
-                    :
-                    <Button type="submit" className='shadow-none'>Submit</Button>
+                      <Button type="submit" className='shadow-none'>Login</Button>
+                    : <Button type="submit" className='shadow-none'>Signup</Button>
+                    : <Button type="submit" className='shadow-none'>Submit</Button>
                 }
               </div>
               <div className="text-center">

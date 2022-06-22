@@ -1,6 +1,32 @@
 import React from "react";
+import * as yup from 'yup';
+import { Formik, useFormik } from 'formik';
 
 function Contact(props) {
+
+  let schema = yup.object().shape({
+    name: yup.string().required("Please enter your name"),
+    email: yup.string().required("Please enter email id.").email("Please enter valid dmail id."),
+    subject: yup.string().required("Please enter subject"),
+    message: yup.string().required("Please enter any message")
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    },
+    validationSchema: schema,
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  let { handleChange, errors, handleSubmit, handleBlur, touched } = formik;
+
+
   return (
     <main>
       <section id="contact" className="contact">
@@ -38,60 +64,70 @@ function Contact(props) {
               </div>
             </div>
             <div className="col-lg-8 mt-5 mt-lg-0">
-              <form action method="post" role="form" className="php-email-form">
-                <div className="row">
-                  <div className="col-md-6 form-group">
+              <Formik>
+                <form action method="post" role="form" className="php-email-form" onSubmit={handleSubmit}>
+                  <div className="row">
+                    <div className="col-md-6 form-group">
+                      <input
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        id="name"
+                        placeholder="Your Name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <p>{errors.name && touched.name ? errors.name : ''}</p>
+                    </div>
+                    <div className="col-md-6 form-group mt-3 mt-md-0">
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        id="email"
+                        placeholder="Your Email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <p>{errors.email && touched.email ? errors.email : ''}</p>
+                    </div>
+                  </div>
+                  <div className="form-group mt-3">
                     <input
                       type="text"
-                      name="name"
                       className="form-control"
-                      id="name"
-                      placeholder="Your Name"
-                      required
+                      name="subject"
+                      id="subject"
+                      placeholder="Subject"
+                      onChange={handleChange}
+                        onBlur={handleBlur}
                     />
+                      <p>{errors.subject && touched.subject ? errors.subject : ''}</p>
                   </div>
-                  <div className="col-md-6 form-group mt-3 mt-md-0">
-                    <input
-                      type="email"
+                  <div className="form-group mt-3">
+                    <textarea
                       className="form-control"
-                      name="email"
-                      id="email"
-                      placeholder="Your Email"
-                      required
+                      name="message"
+                      rows={5}
+                      placeholder="Message"
+                      onChange={handleChange}
+                        onBlur={handleBlur}
+                      defaultValue={""}
                     />
+                      <p>{errors.message && touched.message ? errors.message : ''}</p>
                   </div>
-                </div>
-                <div className="form-group mt-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="subject"
-                    id="subject"
-                    placeholder="Subject"
-                    required
-                  />
-                </div>
-                <div className="form-group mt-3">
-                  <textarea
-                    className="form-control"
-                    name="message"
-                    rows={5}
-                    placeholder="Message"
-                    required
-                    defaultValue={""}
-                  />
-                </div>
-                <div className="my-3">
-                  <div className="loading">Loading</div>
-                  <div className="error-message" />
-                  <div className="sent-message">
-                    Your message has been sent. Thank you!
+                  <div className="my-3">
+                    <div className="loading">Loading</div>
+                    <div className="error-message" />
+                    <div className="sent-message">
+                      Your message has been sent. Thank you!
+                    </div>
                   </div>
-                </div>
-                <div className="text-center">
-                  <button type="submit">Send Message</button>
-                </div>
-              </form>
+                  <div className="text-center">
+                    <button type="submit">Send Message</button>
+                  </div>
+                </form>
+              </Formik>
             </div>
           </div>
         </div>
