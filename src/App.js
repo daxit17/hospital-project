@@ -8,43 +8,29 @@ import Department from "./container/Department/Department";
 import Doctors from "./container/Doctors/Doctors";
 import About from "./container/About/About";
 import Contact from "./container/Contact/Contact";
-import Appointment from "./container/Make-an-Appointment/Appointment";
 import Login from "./container/Login/Login";
 import Medicine from "./container/Medicine/Medicine";
 import UseRef from "./container/UseRef/UseRef";
+import BookAppointment from "./container/Make-an-Appointment/BookAppointment";
+import ListAppointment from "./container/Make-an-Appointment/ListAppointment";
+import PublicRouting from "./container/Routing/PublicRouting/PublicRouting";
+import PrivateRouting from "./container/Routing/PrivateRouting/PrivateRouting";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/Department" exact>
-          <Department />
-        </Route>
-        <Route path="/Doctors" exact>
-          <Doctors />
-        </Route>
-        <Route path="/About" exact>
-          <About />
-        </Route>
-        <Route path="/Medicine" exact>
-          <Medicine />
-        </Route>
-        <Route path="/Contact" exact>
-          <Contact />
-        </Route>
-        <Route path="/Appointment" exact>
-          <Appointment />
-        </Route>
-        <Route path="/Login" exact>
-          <Login />
-        </Route>
-        <Route path="/UseRef" exact>
-          <UseRef />
-        </Route>
+        <PublicRouting path="/" exact component={Home} />
+        <PublicRouting path="/Department" exact component={Department} />
+        <PublicRouting path="/Doctors" exact component={Doctors} />
+        <PublicRouting path="/About" exact component={About} />
+        <PublicRouting path="/Medicine" exact component={Medicine} />
+        <PublicRouting path="/Contact" exact component={Contact} />
+        <PublicRouting path="/UseRef" exact component={UseRef} />
+        <PublicRouting path="/Login" exact restricted={true} component={Login} />
+        <PrivateRouting path="/BookAppointment" exact component={BookAppointment} />
+        <PrivateRouting path="/ListAppointment" exact component={ListAppointment} />
       </Switch>
       <Footer />
     </div>
@@ -52,29 +38,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <div>
-             <Form className='login-form'>
-                <h1>
-                    <span className='font-weight-bold'>Login Page</span>
-                </h1>
-                <FormGroup>
-                    <Label>Email</Label>
-                    <Input type='email' placeholder='Email'></Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label>Password</Label>
-                    <Input type='password' placeholder='password'></Input>
-                </FormGroup>
-                <Button className='btn-lg btn-dark btn-block'>
-                    Log in
-                </Button>
-                <div className='text-center'>
-                    <Link>Sign up</Link>
-                    <span className='p-2'>|</span>
-                    <Link >Forgot password</Link>
-                </div>
-             </Form>
-        </div> */
-}

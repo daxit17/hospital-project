@@ -52,12 +52,37 @@ const Login = () => {
 
   let schema = yup.object().shape(schemaObj);
 
+  // handleData
+
+  const handleData = (values) => {
+    let localData = JSON.parse(localStorage.getItem("user"))
+
+    if (localData === null) {
+      localStorage.setItem("user",JSON.stringify([values]))
+    } else {
+      localData.push(values);
+      localStorage.setItem("user",JSON.stringify(localData));
+    }
+  }
+
+  // handleValue
+
+  const handleValue = () => {
+    localStorage.setItem("user" , "123");
+  }
+
   const formik = useFormik({
     initialValues: intObj,
     validationSchema: schema,
     enableReinitialize:true,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+
+      if (userType === 'login') {
+        handleValue(); 
+      } else {
+        handleData(values);
+      }
+
     },
   });
 

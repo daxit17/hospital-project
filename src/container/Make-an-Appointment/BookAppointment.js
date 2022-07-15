@@ -1,8 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from 'yup';
-import { Formik, useFormik } from 'formik';
+import { Form, Formik, useFormik } from 'formik';
+import { NavLink, useHistory } from 'react-router-dom';
 
-function Appointment(props) {
+function BookAppointment(props) {
+
+  const history = useHistory();
+
+  const [update, setUpdate] = useState(false);
+
+  // handleInsert
+
+  const handleInsert = (values) => {
+
+    let localData = JSON.parse(localStorage.getItem("book_apt"));
+
+    let id = Math.floor(Math.random() * 1000);
+
+    let data = {
+      id: id,
+      ...values
+    }
+
+    if (localData === null) {
+      localStorage.setItem("book_apt", JSON.stringify([data]));
+    } else {
+      localData.push(data);
+      localStorage.setItem("book_apt", JSON.stringify(localData));
+    }
+
+    history.push("/ListAppointment");
+
+  }
+
+  // useEffect
+
+  useEffect(() => {
+    let localData = JSON.parse(localStorage.getItem("book_apt"));
+
+    if (localData && history.location.state !== null) {
+
+      let localData = JSON.parse(localStorage.getItem("book_apt"));
+
+      let fData = localData.filter((l) => l.id === history.location.state.id);
+
+      formik.setValues(fData[0]);
+
+      setUpdate(true);
+    }
+
+  }, []);
+
+  // updateData
+
+  const updateData = (values) => {
+
+    let localData = JSON.parse(localStorage.getItem("book_apt"));
+
+    let newData = localData.map( (v) => {
+
+      if (v.id === values.id) {
+        return values;
+      } else {
+        return v;
+      }
+
+    });
+
+    localStorage.setItem("book_apt",JSON.stringify(newData));
+
+    formik.resetForm();
+
+    setUpdate(false);
+
+    history.push("/ListAppointment");
+
+  }
+
+
+  // schema(yup)
 
   let schema = yup.object().shape({
     name: yup.string().required("Please enter your name."),
@@ -13,6 +89,8 @@ function Appointment(props) {
     doctor: yup.string().required("Please select doctor"),
     message: yup.string().required("Please enter any message")
   });
+
+  // formik
 
   const formik = useFormik({
     initialValues: {
@@ -26,11 +104,15 @@ function Appointment(props) {
     },
     validationSchema: schema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      if (update) {
+        updateData(values);
+      } else {
+        handleInsert(values);
+      }
     },
   });
 
-  let { handleChange, errors, handleSubmit, handleBlur, touched } = formik;
+  let { handleChange, errors, handleSubmit, handleBlur, touched, values } = formik;
 
   return (
     <main>
@@ -38,26 +120,30 @@ function Appointment(props) {
         <div className="container">
           <div className="section-title">
             <h2>Make an Appointment</h2>
-            <p>
-              Aenean enim orci, suscipit vitae sodales ac, semper in ex. Nunc
-              aliquam eget nibh eu euismod. Donec dapibus blandit quam volutpat
-              sollicitudin. Fusce tincidunt sit amet ex in volutpat. Donec
-              lacinia finibus tortor. Curabitur luctus eleifend odio. Phasellus
-              placerat mi et suscipit pulvinar.
-            </p>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              <NavLink to="/BookAppointment" exact>
+                Book-Appointment
+              </NavLink>
+            </div>
+            <div className="col-6">
+              <NavLink to="/ListAppointment" exact>
+                List-Appointment
+              </NavLink>
+            </div>
           </div>
           <Formik>
-            <form action method="post" role="form" className="php-email-form" onSubmit={handleSubmit}>
+            <Form className="php-email-form" onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-md-4 form-group">
                   <input
+                    value={values.name}
                     type="text"
                     name="name"
                     className="form-control"
                     id="name"
                     placeholder="Your Name"
-                    data-rule="minlen:4"
-                    data-msg="Please enter at least 4 chars"
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -66,13 +152,12 @@ function Appointment(props) {
                 </div>
                 <div className="col-md-4 form-group mt-3 mt-md-0">
                   <input
-                    type="email"
+                    value={values.email}
+                    type="text"
                     className="form-control"
                     name="email"
                     id="email"
                     placeholder="Your Email"
-                    data-rule="email"
-                    data-msg="Please enter a valid email"
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -81,13 +166,12 @@ function Appointment(props) {
                 </div>
                 <div className="col-md-4 form-group mt-3 mt-md-0">
                   <input
+                    value={values.phone}
                     type="tel"
                     className="form-control"
                     name="phone"
                     id="phone"
                     placeholder="Your Phone"
-                    data-rule="minlen:4"
-                    data-msg="Please enter at least 4 chars"
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -98,13 +182,12 @@ function Appointment(props) {
               <div className="row">
                 <div className="col-md-4 form-group mt-3">
                   <input
+                    value={values.date}
                     type="date"
                     name="date"
                     className="form-control datepicker"
                     id="date"
                     placeholder="Appointment Date"
-                    data-rule="minlen:4"
-                    data-msg="Please enter at least 4 chars"
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -113,6 +196,7 @@ function Appointment(props) {
                 </div>
                 <div className="col-md-4 form-group mt-3">
                   <select
+                    value={values.department}
                     name="department"
                     id="department"
                     className="form-select"
@@ -128,7 +212,13 @@ function Appointment(props) {
                   <div className="validate" />
                 </div>
                 <div className="col-md-4 form-group mt-3">
-                  <select name="doctor" id="doctor" className="form-select" onChange={handleChange} onBlur={handleBlur}>
+                  <select
+                    value={values.doctor}
+                    name="doctor"
+                    id="doctor"
+                    className="form-select"
+                    onChange={handleChange}
+                    onBlur={handleBlur}>
                     <option value>Select Doctor</option>
                     <option value="Doctor 1">Doctor 1</option>
                     <option value="Doctor 2">Doctor 2</option>
@@ -140,6 +230,7 @@ function Appointment(props) {
               </div>
               <div className="form-group mt-3">
                 <textarea
+                  value={values.message}
                   className="form-control"
                   name="message"
                   rows={5}
@@ -148,7 +239,7 @@ function Appointment(props) {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                  <p>{errors.message && touched.message ? errors.message : ''}</p>
+                <p>{errors.message && touched.message ? errors.message : ''}</p>
                 <div className="validate" />
               </div>
               <div className="mb-3">
@@ -159,9 +250,14 @@ function Appointment(props) {
                 </div>
               </div>
               <div className="text-center">
-                <button type="submit">Make an Appointment</button>
+                {
+                  (update) ?
+                    <button type="submit">Update an Appointment</button>
+                    :
+                    <button type="submit">Make an Appointment</button>
+                }
               </div>
-            </form>
+            </Form>
           </Formik>
         </div>
       </section>
@@ -169,4 +265,4 @@ function Appointment(props) {
   );
 }
 
-export default Appointment;
+export default BookAppointment;
