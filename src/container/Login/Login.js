@@ -26,26 +26,26 @@ const Login = () => {
         email: yup.string().required("Please enter email id").email("Please enter valid email id"),
         password: yup.string().required("Please enter password.")
       }
-  
+
       intObj = {
         email: '',
         password: '',
       }
-  
+
     } else {
-  
+
       schemaObj = {
         name: yup.string().required("Please enter name"),
         email: yup.string().required("Please enter email id").email("Please enter valid email id"),
         password: yup.string().required("Please enter password.")
       }
-  
+
       intObj = {
         name: '',
         email: '',
         password: '',
       }
-  
+
     }
   }
 
@@ -58,27 +58,27 @@ const Login = () => {
     let localData = JSON.parse(localStorage.getItem("user"))
 
     if (localData === null) {
-      localStorage.setItem("user",JSON.stringify([values]))
+      localStorage.setItem("user", JSON.stringify([values]))
     } else {
       localData.push(values);
-      localStorage.setItem("user",JSON.stringify(localData));
+      localStorage.setItem("user", JSON.stringify(localData));
     }
   }
 
   // handleValue
 
   const handleValue = () => {
-    localStorage.setItem("user" , "123");
+    localStorage.setItem("user", "123");
   }
 
   const formik = useFormik({
     initialValues: intObj,
     validationSchema: schema,
-    enableReinitialize:true,
+    enableReinitialize: true,
     onSubmit: values => {
 
       if (userType === 'login') {
-        handleValue(); 
+        handleValue();
       } else {
         handleData(values);
       }
@@ -161,7 +161,7 @@ const Login = () => {
                   !reset ?
                     userType === 'login' ?
                       <Button type="submit" className='shadow-none'>Login</Button>
-                    : <Button type="submit" className='shadow-none'>Signup</Button>
+                      : <Button type="submit" className='shadow-none'>Signup</Button>
                     : <Button type="submit" className='shadow-none'>Submit</Button>
                 }
               </div>
