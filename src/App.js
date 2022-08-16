@@ -15,24 +15,27 @@ import BookAppointment from "./container/Make-an-Appointment/BookAppointment";
 import ListAppointment from "./container/Make-an-Appointment/ListAppointment";
 import PublicRouting from "./container/Routing/PublicRouting/PublicRouting";
 import PrivateRouting from "./container/Routing/PrivateRouting/PrivateRouting";
+import ThemeProvider from "./context/Theme_context";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Switch>
-        <PublicRouting path="/" exact component={Home} />
-        <PublicRouting path="/Department" exact component={Department} />
-        <PublicRouting path="/Doctors" exact component={Doctors} />
-        <PublicRouting path="/About" exact component={About} />
-        <PublicRouting path="/Medicine" exact component={Medicine} />
-        <PublicRouting path="/Contact" exact component={Contact} />
-        <PublicRouting path="/UseRef" exact component={UseRef} />
-        <PublicRouting path="/Login" exact restricted={true} component={Login} />
-        <PrivateRouting path="/BookAppointment" exact component={BookAppointment} />
-        <PrivateRouting path="/ListAppointment" exact component={ListAppointment} />
-      </Switch>
-      <Footer />
+      <ThemeProvider>
+        <Header />
+        <Switch>
+          <PublicRouting path="/" exact component={Home} />
+          <PublicRouting path="/Department" exact component={Department} />
+          <PublicRouting path="/Doctors" exact component={Doctors} />
+          <PublicRouting path="/About" exact component={About} />
+          <PublicRouting path="/Medicine" exact component={Medicine} />
+          <PublicRouting path="/Contact" exact component={Contact} />
+          <PublicRouting path="/UseRef" exact component={UseRef} />
+          <PublicRouting path="/Login" exact restricted={true} component={Login} />
+          <PrivateRouting path="/BookAppointment" exact component={BookAppointment} />
+          <PrivateRouting path="/ListAppointment" exact component={ListAppointment} />
+        </Switch>
+        <Footer />
+      </ThemeProvider>
     </div>
   );
 }
