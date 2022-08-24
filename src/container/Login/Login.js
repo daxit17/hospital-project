@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import * as yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { useDispatch } from "react-redux";
-import { signUpAction } from '../../redux/Actions/Auth.Action';
+import { signInAction, signUpAction } from '../../redux/Actions/Auth.Action';
 
 const Login = () => {
   const [userType, setUserType] = useState('login')
@@ -75,8 +75,11 @@ const Login = () => {
 
   // handleValue
 
-  const handleValue = () => {
-    localStorage.setItem("user", "123");
+  const handleValue = (values) => {
+
+    // localStorage.setItem("user", "123");
+
+    dispatch(signInAction(values));
   }
 
   const formik = useFormik({
@@ -86,7 +89,7 @@ const Login = () => {
     onSubmit: values => {
 
       if (userType === 'login') {
-        handleValue();
+        handleValue(values);
       } else {
         handleData(values);
       }
