@@ -1,13 +1,16 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects'
 import { SignInApi, SignUpApi } from '../../common/api/Auth.Api';
+import { setAlert } from '../Actions/Alert.Action';
 import * as ActionTypes from "../ActionTypes";
 
 function* SignUp(action) {
     try {
         const user = yield call(SignUpApi, action.payload);
+        yield put(setAlert({ type: user.payload, color: "success" }))
         console.log(user);
         // yield put({ type: "USER_FETCH_SUCCEEDED", user: user });
     } catch (e) {
+        yield put(setAlert({ text: e.payload, color: "error" }))
         // yield put({ type: "USER_FETCH_FAILED", message: e.message });
         console.log(e);
     }
@@ -16,8 +19,10 @@ function* SignUp(action) {
 function* SignIn(action) {
     try {
         const user = yield call(SignInApi, action.payload);
+        yield put(setAlert({ type: user.payload, color: "success" }))
         console.log(user);
     } catch (e) {
+        yield put(setAlert({ type: e.payload, colot: "error" }))
         console.log(e);
     }
 }
