@@ -52,7 +52,7 @@ export const SignInApi = (data) => {
                 if (user.emailVerified) {
                     resolve({ payload: "You are successfully login..." });
                 } else {
-                    reject({ payload: "please verify your email..." });
+                    resolve({ payload: "please verify your email..." });
                 }
 
                 console.log(user);
@@ -63,13 +63,13 @@ export const SignInApi = (data) => {
                 const errorMessage = error.message;
 
                 if (errorCode.localeCompare("auth/wrong-password") == 0) {
-                    reject({ payload: "Please Check Your Email." });
+                    reject({ payload: "Please Check Your Password." });
                 } else if (errorCode.localeCompare("auth/user-not-found") == 0) {
-                    reject({ payload: "Please Check Your Password" });
+                    reject({ payload: "Please Check Your Email" });
                 } else {
                     reject({ payload: errorCode });
                 }
-                
+
             });
 
     })

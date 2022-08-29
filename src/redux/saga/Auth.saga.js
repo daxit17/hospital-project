@@ -6,7 +6,7 @@ import * as ActionTypes from "../ActionTypes";
 function* SignUp(action) {
     try {
         const user = yield call(SignUpApi, action.payload);
-        yield put(setAlert({ type: user.payload, color: "success" }))
+        yield put(setAlert({ text: user.payload, color: "success" }))
         console.log(user);
         // yield put({ type: "USER_FETCH_SUCCEEDED", user: user });
     } catch (e) {
@@ -19,10 +19,10 @@ function* SignUp(action) {
 function* SignIn(action) {
     try {
         const user = yield call(SignInApi, action.payload);
-        yield put(setAlert({ type: user.payload, color: "success" }))
+        yield put(setAlert({ text: user.payload, color: "success" }))
         console.log(user);
     } catch (e) {
-        yield put(setAlert({ type: e.payload, colot: "error" }))
+        yield put(setAlert({ text: e.payload, color: "error" }))
         console.log(e);
     }
 }
