@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,6 +12,8 @@ import Alert from "../Alert/Alert";
 function Header(props) {
 
   const value = useContext(ThemeContext)
+
+  let auth = useSelector(state => state.auth);
 
   console.log(value);
 
@@ -40,7 +43,7 @@ function Header(props) {
           <button onClick={() => value.toggle_theme(value.theme)}>
             Change Theme
           </button>
-          <Alert/>
+          <Alert />
         </div>
       </div>
       <header id="header" className="fixed-top">
@@ -93,9 +96,17 @@ function Header(props) {
             <span className="d-none d-md-inline">Make an</span>
             Appointment
           </NavLink>
-          <NavLink className="appointment-btn scrollto" to="/Login" exact>
-            <span className="d-none d-md-inline">Login/ Signup</span>
-          </NavLink>
+          {
+            auth.user === null ?
+              <NavLink className="appointment-btn scrollto" to="/Login" exact>
+                <span className="d-none d-md-inline">Login/ Signup</span>
+              </NavLink>
+              :
+              <NavLink className="appointment-btn scrollto" to="/Login" exact>
+                <span className="d-none d-md-inline">LogOut</span>
+              </NavLink>
+          }
+
         </div>
       </header>
     </div>

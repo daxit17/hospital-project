@@ -7,3 +7,7 @@ export const signUpAction = (data) => (dispatch) => {
 export const signInAction = (data) => (dispatch) => {
     dispatch({ type: ActionTypes.SIGN_IN_USER, payload: data });
 }
+
+export const signedInAction = (data) => (dispatch) => {
+    dispatch({ type: ActionTypes.SIGNED_IN_USER, payload: data })
+}
