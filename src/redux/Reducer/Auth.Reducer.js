@@ -18,6 +18,14 @@ export const authReducer = (state = initialVal, action) => {
                 error: ''
             }
 
+        case ActionTypes.LOGGED_OUT_USER:
+            return {
+                ...state,
+                isLoading: false,
+                user: null,
+                error: ''
+            }
+
         default:
             return state;
 
