@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../FireBase";
 
 export const SignUpApi = (data) => {
@@ -50,7 +50,7 @@ export const SignInApi = (data) => {
                 const user = userCredential.user;
 
                 if (user.emailVerified) {
-                    resolve({ payload: "You are successfully login..." });
+                    resolve({ payload: user });
                 } else {
                     resolve({ payload: "please verify your email..." });
                 }
@@ -83,6 +83,46 @@ export const LogOutApi = () => {
             })
             .catch((error) => {
                 reject({ payload: error })
+            })
+    })
+}
+
+export const GoogleSignInApi = () => {
+    return new Promise((resolve, reject) => {
+        const provider = new GoogleAuthProvider();
+
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+
+                resolve({ payload: user });
+
+            }).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+
+                reject({ payload: error });
+
+            });
+
+    })
+}
+
+export const ForgotPasswordApi = (data) => {
+    return new Promise((resolve, reject) => {
+        sendPasswordResetEmail(auth, data.email)
+            .then(() => {
+                resolve({ payload: "Forgot PassWord SuccessFully and Check Your Email" })
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                reject({ payload: "Email Is Wrong" })
+                console.log(errorCode);
             })
     })
 }

@@ -7,3 +7,6 @@ export const LOGGED_OUT_USER = "LOGGED_OUT_USER";
 
 export const SET_ALERT = "SET_ALERT";
 export const RESET_ALERT = "RESET_ALERT";
+
+export const GOOLE_SIGNIN_USER = "GOOLE_SIGNIN_USER";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";

@@ -19,3 +19,11 @@ export const logOutAction = () => (dispatch) => {
 export const loggedOutAction = () => (dispatch) => {
     dispatch({ type: ActionTypes.LOGGED_OUT_USER })
 }
+
+export const GoogleSignInAction = () => (dispatch) => {
+    dispatch({ type: ActionTypes.GOOLE_SIGNIN_USER })
+}
+
+export const ForgotPasswordAction = (data) => (dispatch) => {
+    dispatch({ type: ActionTypes.FORGOT_PASSWORD, payload: data })
+}

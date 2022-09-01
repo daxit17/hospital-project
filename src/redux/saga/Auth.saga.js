@@ -1,5 +1,5 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects'
-import { LogOutApi, SignInApi, SignUpApi } from '../../common/api/Auth.Api';
+import { ForgotPasswordApi, GoogleSignInApi, LogOutApi, SignInApi, SignUpApi } from '../../common/api/Auth.Api';
 import { history } from '../../History';
 import { setAlert } from '../Actions/Alert.Action';
 import { loggedOutAction, signedInAction } from '../Actions/Auth.Action';
@@ -23,7 +23,20 @@ function* SignIn(action) {
         const user = yield call(SignInApi, action.payload);
         yield put(signedInAction(user))
         history.push("/")
-        yield put(setAlert({ text: user.payload, color: "success" }))
+        yield put(setAlert({ text: "Login Is SuccessFully", color: "success" }))
+        console.log(user);
+    } catch (e) {
+        yield put(setAlert({ text: e.payload, color: "error" }))
+        console.log(e);
+    }
+}
+
+function* GoogleSignIn(action) {
+    try {
+        const user = yield call(GoogleSignInApi, action.payload);
+        yield put(signedInAction(user))
+        history.push("/")
+        yield put(setAlert({ text: "succesfully login with google...", color: "success" }))
         console.log(user);
     } catch (e) {
         yield put(setAlert({ text: e.payload, color: "error" }))
@@ -35,6 +48,19 @@ function* LogOut(action) {
     try {
         const user = yield call(LogOutApi);
         yield put(loggedOutAction(user))
+        history.push("/")
+        yield put(setAlert({ text: user.payload, color: "success" }))
+        console.log(user);
+    } catch (e) {
+        yield put(setAlert({ text: e.payload, color: "error" }))
+        console.log(e);
+    }
+}
+
+function* ForgotPassword(action) {
+    try {
+        const user = yield call(ForgotPasswordApi, action.payload);
+        yield put(signedInAction(user))
         history.push("/")
         yield put(setAlert({ text: user.payload, color: "success" }))
         console.log(user);
@@ -56,10 +82,20 @@ function* watchLogOut() {
     yield takeEvery(ActionTypes.LOG_OUT_USER, LogOut);
 }
 
+function* watchGoogleSignIn() {
+    yield takeEvery(ActionTypes.GOOLE_SIGNIN_USER, GoogleSignIn);
+}
+
+function* watchForgotPassword() {
+    yield takeEvery(ActionTypes.FORGOT_PASSWORD, ForgotPassword)
+}
+
 export function* AuthUpSaga() {
     yield all([
         watchSignUp(),
         watchSignIn(),
-        watchLogOut()
+        watchLogOut(),
+        watchGoogleSignIn(),
+        watchForgotPassword()
     ])
 }

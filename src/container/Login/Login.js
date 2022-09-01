@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import * as yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { useDispatch } from "react-redux";
-import { signInAction, signUpAction } from '../../redux/Actions/Auth.Action';
+import { ForgotPasswordAction, GoogleSignInAction, signInAction, signUpAction } from '../../redux/Actions/Auth.Action';
 
 const Login = () => {
   const [userType, setUserType] = useState('login')
@@ -82,16 +82,22 @@ const Login = () => {
     dispatch(signInAction(values));
   }
 
+  const handleGoogleSignIn = () => {
+    dispatch(GoogleSignInAction());
+  }
+
   const formik = useFormik({
     initialValues: intObj,
     validationSchema: schema,
     enableReinitialize: true,
     onSubmit: values => {
 
-      if (userType === 'login') {
+      if (userType === 'login' && reset === false) {
         handleValue(values);
-      } else {
+      } else if (userType === "Login" && reset == false) {
         handleData(values);
+      } else if (reset === true) {
+        dispatch(ForgotPasswordAction(values));
       }
 
     },
@@ -199,7 +205,9 @@ const Login = () => {
                   <div className="text-center">
                     {
                       !reset ?
-                        <Button onClick={() => { setReset(true) }} type='button' className='btn text-primary text-decoration-underline bg-white shadow-none border-0'>Forgot Password?</Button>
+                        <>
+                          <Button onClick={() => { setReset(true); }} type='button' className='btn text-primary text-decoration-underline bg-white shadow-none border-0'>Forgot Password?</Button>
+                        </>
                         :
                         null
                     }
@@ -207,6 +215,7 @@ const Login = () => {
                   :
                   null
               }
+              <button type="submit" className='d-block mx-auto' onClick={() => handleGoogleSignIn()}>Login With Google</button>
             </Form>
           </Formik>
         </Container>
